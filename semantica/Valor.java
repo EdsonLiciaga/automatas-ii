@@ -2,10 +2,10 @@ package semantica;
 
 public class Valor 
 {
-    public Valor(String token, String lexema)
+    public Valor(String valorToken, String valorLexema)
     {
-        this.valorToken = token; 
-        this.valorLexema = lexema; 
+        this.valorToken = valorToken; 
+        this.valorLexema = valorLexema; 
     } 
 
     public String valorToken; 

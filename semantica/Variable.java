@@ -5,16 +5,14 @@ import java.util.List;
 
 public class Variable
 {    
-    public Variable(String tokenVariable, String identificador, boolean isDeclarated) 
+    public Variable(String tokenVariable, String variableLexema) 
     {
         this.variableToken = tokenVariable; 
-        this.identificador = identificador; 
-        this.isDeclarated = isDeclarated;  
+        this.variableLexema = variableLexema; 
     }
 
     public String variableToken; 
-    public String identificador;
-    public boolean isDeclarated = false; 
+    public String variableLexema;
     public List<Valor> valor = new ArrayList<>(); 
     public int dimensiones; 
 }

@@ -1,9 +1,5 @@
 package semantica;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -12,13 +8,11 @@ import java.util.stream.Collectors;
 
 public class App
 {
-    private static Set<String> errores = new HashSet<>(); 
-
     public static void main(String[] args) throws Exception
     {
-        String archivo = "tokensPractica5.txt";
-        List<Token> tokens = getTokensFromFile(archivo);
-        List<Variable> variables = getVariables(tokens); 
+        Set<String> errores = new HashSet<>();
+        List<Token> tokens = Services.getTokensFromFile("tokensPractica5.txt");
+        List<Variable> variables = getVariablesFromTokens(tokens); 
          
         List<Token> variablesNoDeclaradas = Semantica.getVariablesNoDeclaradas(tokens);
         if (variablesNoDeclaradas.size() > 0) 
@@ -40,12 +34,12 @@ public class App
         if (variablesValorInvalido.size() > 0)
         {
             for (Variable variable : variablesValorInvalido) {
-                errores.add(String.format("La variable %s tiene un valor incorrecto asignado", variable.identificador)); 
+                errores.add(String.format("La variable %s tiene un valor incorrecto asignado", variable.variableLexema)); 
             }
         } 
 
-        addDimensionesToVariables(tokens, variables);
-        List<Token> variablesNoDimensionadas = Semantica.getVariablesNoDimensionadas(tokens, variables); 
+        addDimensionesToVariablesArray(tokens, variables);
+        List<Token> variablesNoDimensionadas = Semantica.getVariablesArrayNoDimensionadas(tokens, variables); 
         if (variablesNoDimensionadas.size() > 0)
         {
             for (Token token : variablesNoDimensionadas) {
@@ -53,88 +47,31 @@ public class App
             }
         }
 
-        if (errores.size() > 0) 
+        if (!errores.isEmpty()) 
         {
             String errorMessage = Error.getErrores(errores); 
             System.out.println(errorMessage);
         } else {
-            System.out.println("Todo bien perrito "); 
+            System.out.println("Análisis semántico finalizado."); 
         }
     }
 
-    private static List<Token> getTokensFromFile(String archivo) 
+    private static List<Variable> getVariablesFromTokens(List<Token> tokens) throws Exception
     {
-        List<Token> tokens = new ArrayList<>();
-        
-        try (BufferedReader br = new BufferedReader(new FileReader(archivo))) 
-        {
-            String linea;
-
-            while ((linea = br.readLine()) != null) 
-            {
-                String[] partes = linea.split("\\t");
-                if (partes.length == 4) 
-                {  
-                    String lexema = partes[0].trim();
-                    String numToken = partes[1].trim();
-                    String posicion = partes[2].trim();
-                    int numlinea = Integer.parseInt(partes[3].trim()); 
-
-                    List<String> tokenValidos = List.of(
-                        "-51",
-                        "-52", 
-                        "-53",
-                        "-54"       
-                    );
-
-                    boolean isVariable = false;
-                    if (tokenValidos.contains(partes[1])) {
-                        isVariable = true; 
-                    }
-
-                    Token token = new Token(lexema, numToken, posicion, numlinea, isVariable); 
-                    tokens.add(token);
-                } else {
-                    errores.add("Línea con formato incorrecto: " + linea); 
-                }
-            }
-        } 
-        catch (FileNotFoundException e) 
-        {
-            String message = String.format((char) 27 + "[31m" + "%s.%n" +  (char) 27 + "[0m", "Archivo no encontrado: " + archivo);
-            System.out.println(message);
-            e.printStackTrace();
-        } 
-        catch (IOException e) 
-        {
-            String message = String.format((char) 27 + "[31m" + "%s.%n" +  (char) 27 + "[0m", "Error al leer el archivo: " + e.getMessage());
-            System.out.println(message);
-            e.printStackTrace();
+        int lineaInicio = Services.getLineaInicio(tokens);
+        if (lineaInicio == 0) {
+            throw new Exception("No se ha encontrado el token 'inicio' del código fuente.");
         }
-        
-        return tokens;
-    }
 
-    private static List<Variable> getVariables(List<Token> tokens) 
-    {
-        int lineaInicio = tokens
-            .stream()
-            .filter(t -> "-2".equals(t.numToken))
-            .mapToInt(t -> t.numlinea) 
-            .findFirst()
-            .orElse(0);
-
-        // Obtiene los tokens de las variables declaradas dentro del bloque variables
-        List<Token> tokenVariableDeclaradas = tokens 
-            .stream()
-            .filter(t -> t.isVariable
-                && t.numlinea < lineaInicio)
-            .collect(Collectors.toList()); 
+        List<Token> tokenVariablesDeclaradas = Services.getTokenVariablesDeclaradas(tokens, lineaInicio); 
+        if (tokenVariablesDeclaradas.isEmpty()) {
+            throw new Exception("No se encontraron variables declaradas en el código fuente."); 
+        }
 
         List<Variable> variables = new ArrayList<>(); 
-        for (Token token : tokenVariableDeclaradas) 
+        for (Token token : tokenVariablesDeclaradas) 
         {
-            Variable variable = new Variable(token.numToken, token.lexema, true); 
+            Variable variable = new Variable(token.numToken, token.lexema); 
             variables.add(variable); 
         }
 
@@ -161,13 +98,14 @@ public class App
                 .filter(t -> t.numlinea == token.numlinea)
                 .map(t -> new Valor(t.numToken, t.lexema))
                 .collect(Collectors.toList());  
-                valor.removeFirst(); 
-                valor.removeFirst();
-                valor.removeLast();
+                
+            valor.removeFirst(); 
+            valor.removeFirst();
+            valor.removeLast();
 
             Variable variable = variables
                 .stream()
-                .filter(v -> v.identificador.equals(token.lexema))
+                .filter(v -> v.variableLexema.equals(token.lexema))
                 .findFirst()
                 .orElse(null);
 
@@ -177,18 +115,16 @@ public class App
         }
     }
     
-    private static void addDimensionesToVariables(List<Token> tokens, List<Variable> variables)
+    private static void addDimensionesToVariablesArray(List<Token> tokens, List<Variable> variables) throws Exception
     {
-        int lineaInicio = tokens
-            .stream()
-            .filter(t -> "-2".equals(t.numToken))
-            .mapToInt(t -> t.numlinea) 
-            .findFirst()
-            .orElse(0);
+        int lineaInicio = Services.getLineaInicio(tokens);
+        if (lineaInicio == 0) {
+            throw new Exception("No se ha encontrado el token 'inicio' del código fuente.");
+        }
 
         List<String> identificadores = variables
             .stream()
-            .map(v -> v.identificador)
+            .map(v -> v.variableLexema)
             .collect(Collectors.toList()); 
             
         for (int i = 0; i < lineaInicio; i++)
@@ -201,7 +137,7 @@ public class App
 
             Variable variable = variables
                 .stream()
-                .filter(v -> v.identificador.equals(token.lexema))
+                .filter(v -> v.variableLexema.equals(token.lexema))
                 .findFirst()
                 .orElse(null); 
 

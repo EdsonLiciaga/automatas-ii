@@ -8,15 +8,9 @@ import java.util.stream.Collectors;
 
 public class Semantica
 {
-    public static List<Token> getVariablesNoDimensionadas(List<Token> tokens, List<Variable> variables) throws Exception
+    public static List<Token> getVariablesArrayNoDimensionadas(List<Token> tokens, List<Variable> variables) throws Exception
     {
-        int lineaInicio = tokens
-            .stream()
-            .filter(t -> "-2".equals(t.numToken))
-            .mapToInt(t -> t.numlinea) 
-            .findFirst()
-            .orElse(0);
-            
+        int lineaInicio = Services.getLineaInicio(tokens);
         if (lineaInicio == 0) {
             throw new Exception("No se ha encontrado el token 'inicio' del código fuente");
         }
@@ -28,7 +22,7 @@ public class Semantica
 
             Variable variable = variables
                 .stream()
-                .filter(v -> v.identificador.equals(token.lexema))
+                .filter(v -> v.variableLexema.equals(token.lexema))
                 .findFirst()
                 .orElse(null);  
 
@@ -60,7 +54,7 @@ public class Semantica
 
     public static List<Variable> getVariablesValorInvalido(List<Variable> variables)
     {
-        List<Variable> variableValorInvalidos = new ArrayList<>();
+        List<Variable> variablesValorInvalidos = new ArrayList<>();
         for (Variable variable : variables) 
         {
             List<Valor> valor = variable.valor; 
@@ -90,7 +84,7 @@ public class Semantica
                 if (tokenValidos.contains(valorToken)) {
                     continue; 
                 } else {
-                    variableValorInvalidos.add(variable); 
+                    variablesValorInvalidos.add(variable); 
                 }
             }
             else if (valor.size() % 2 == 1)
@@ -154,64 +148,52 @@ public class Semantica
                 if (valorIsValid) {
                     continue; 
                 } else {
-                    variableValorInvalidos.add(variable); 
+                    variablesValorInvalidos.add(variable); 
                 } 
             }
         }
 
-        return variableValorInvalidos; 
+        return variablesValorInvalidos; 
     }
 
     public static List<Token> getVariablesDuplicadas(List<Token> tokens) throws Exception
     {
-        int lineaInicio = tokens
-            .stream()
-            .filter(t -> "-2".equals(t.numToken))
-            .mapToInt(t -> t.numlinea) 
-            .findFirst()
-            .orElse(0);
-            
+        int lineaInicio = Services.getLineaInicio(tokens);
         if (lineaInicio == 0) {
             throw new Exception("No se ha encontrado el token 'inicio' del código fuente");
         }
 
-        List<Token> tokenVariableDeclaradas = tokens 
-            .stream()
-            .filter(t -> t.isVariable
-                && t.numlinea < lineaInicio)
-            .collect(Collectors.toList()); 
+        List<Token> tokenVariablesDeclaradas = Services.getTokenVariablesDeclaradas(tokens, lineaInicio); 
+        if (tokenVariablesDeclaradas.isEmpty()) {
+            throw new Exception("No se encontraron variables declaradas en el código fuente."); 
+        }
 
         Set<String> unicos = new HashSet<>(); 
         
-        List<Token> duplicados = tokenVariableDeclaradas
+        List<Token> variablesDuplicadas = tokenVariablesDeclaradas
             .stream()
             .filter(t -> !unicos.add(t.lexema))
             .collect(Collectors.toList());
 
-        return duplicados; 
+        return variablesDuplicadas; 
     }
 
     public static List<Token> getVariablesNoDeclaradas(List<Token> tokens) throws Exception 
     {
-        //Obtiene el token de inicio del programa del codigo fuente
-        int lineaInicio = tokens
-            .stream()
-            .filter(t -> "-2".equals(t.numToken))
-            .mapToInt(t -> t.numlinea) 
-            .findFirst()
-            .orElse(0);
-            
+        int lineaInicio = Services.getLineaInicio(tokens);
         if (lineaInicio == 0) {
             throw new Exception("No se ha encontrado el token 'inicio' del código fuente");
         }
  
-        // Obtiene los tokens de las variables declaradas dentro del bloque variables
-        List<String> tokenVariableDeclaradas = tokens 
-            .stream()
-            .filter(t -> t.isVariable
-                && t.numlinea < lineaInicio)
-            .map(t -> t.lexema)
-            .collect(Collectors.toList()); 
+        List<Token> tokenVariablesDeclaradas = Services.getTokenVariablesDeclaradas(tokens, lineaInicio); 
+        if (tokenVariablesDeclaradas.isEmpty()) {
+            throw new Exception("No se encontraron variables declaradas en el código fuente."); 
+        } 
+
+        List<String> tokenVariablesDeclaradasLexema = tokenVariablesDeclaradas
+        .stream()
+        .map(tvd -> tvd.lexema)
+        .collect(Collectors.toList());
 
         List<Token> tokenVariables = tokens
             .stream()
@@ -220,11 +202,11 @@ public class Semantica
             .distinct()
             .collect(Collectors.toList());
 
-        List<Token> tokenVariableNoDeclaradas = tokenVariables
+        List<Token> tokenVariablesNoDeclaradas = tokenVariables
             .stream()
-            .filter(t -> !tokenVariableDeclaradas.contains(t.lexema))
+            .filter(t -> !tokenVariablesDeclaradasLexema.contains(t.lexema))
             .collect(Collectors.toList());
         
-        return tokenVariableNoDeclaradas; 
+        return tokenVariablesNoDeclaradas; 
     }
 }

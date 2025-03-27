@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public class Semantica
 {
-    public static List<Token> getVariablesNoDimensionadas(List<Token> tokens, List<Variable> variables) throws Exception
+    public static List<Token> getVariablesArrayNoDimensionadas(List<Token> tokens, List<Variable> variables) throws Exception
     {
         int lineaInicio = tokens
             .stream()
@@ -60,7 +60,7 @@ public class Semantica
 
     public static List<Variable> getVariablesValorInvalido(List<Variable> variables)
     {
-        List<Variable> variableValorInvalidos = new ArrayList<>();
+        List<Variable> variablesValorInvalidos = new ArrayList<>();
         for (Variable variable : variables) 
         {
             List<Valor> valor = variable.valor; 
@@ -90,7 +90,7 @@ public class Semantica
                 if (tokenValidos.contains(valorToken)) {
                     continue; 
                 } else {
-                    variableValorInvalidos.add(variable); 
+                    variablesValorInvalidos.add(variable); 
                 }
             }
             else if (valor.size() % 2 == 1)
@@ -154,12 +154,12 @@ public class Semantica
                 if (valorIsValid) {
                     continue; 
                 } else {
-                    variableValorInvalidos.add(variable); 
+                    variablesValorInvalidos.add(variable); 
                 } 
             }
         }
 
-        return variableValorInvalidos; 
+        return variablesValorInvalidos; 
     }
 
     public static List<Token> getVariablesDuplicadas(List<Token> tokens) throws Exception
@@ -175,7 +175,7 @@ public class Semantica
             throw new Exception("No se ha encontrado el token 'inicio' del código fuente");
         }
 
-        List<Token> tokenVariableDeclaradas = tokens 
+        List<Token> tokenVariablesDeclaradas = tokens 
             .stream()
             .filter(t -> t.isVariable
                 && t.numlinea < lineaInicio)
@@ -183,7 +183,7 @@ public class Semantica
 
         Set<String> unicos = new HashSet<>(); 
         
-        List<Token> duplicados = tokenVariableDeclaradas
+        List<Token> duplicados = tokenVariablesDeclaradas
             .stream()
             .filter(t -> !unicos.add(t.lexema))
             .collect(Collectors.toList());
@@ -206,7 +206,7 @@ public class Semantica
         }
  
         // Obtiene los tokens de las variables declaradas dentro del bloque variables
-        List<String> tokenVariableDeclaradas = tokens 
+        List<String> tokenVariablesDeclaradas = tokens 
             .stream()
             .filter(t -> t.isVariable
                 && t.numlinea < lineaInicio)
@@ -220,11 +220,11 @@ public class Semantica
             .distinct()
             .collect(Collectors.toList());
 
-        List<Token> tokenVariableNoDeclaradas = tokenVariables
+        List<Token> tokenVariablesNoDeclaradas = tokenVariables
             .stream()
-            .filter(t -> !tokenVariableDeclaradas.contains(t.lexema))
+            .filter(t -> !tokenVariablesDeclaradas.contains(t.lexema))
             .collect(Collectors.toList());
         
-        return tokenVariableNoDeclaradas; 
+        return tokenVariablesNoDeclaradas; 
     }
 }

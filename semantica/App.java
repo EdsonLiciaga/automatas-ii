@@ -16,9 +16,8 @@ public class App
 
     public static void main(String[] args) throws Exception
     {
-        String archivo = "tokensPractica5.txt";
-        List<Token> tokens = getTokensFromFile(archivo);
-        List<Variable> variables = getVariables(tokens); 
+        List<Token> tokens = getTokensFromFile("tokensPractica5.txt");
+        List<Variable> variables = getVariablesFromTokens(tokens); 
          
         List<Token> variablesNoDeclaradas = Semantica.getVariablesNoDeclaradas(tokens);
         if (variablesNoDeclaradas.size() > 0) 
@@ -44,8 +43,8 @@ public class App
             }
         } 
 
-        addDimensionesToVariables(tokens, variables);
-        List<Token> variablesNoDimensionadas = Semantica.getVariablesNoDimensionadas(tokens, variables); 
+        addDimensionesToVariablesArray(tokens, variables);
+        List<Token> variablesNoDimensionadas = Semantica.getVariablesArrayNoDimensionadas(tokens, variables); 
         if (variablesNoDimensionadas.size() > 0)
         {
             for (Token token : variablesNoDimensionadas) {
@@ -53,12 +52,12 @@ public class App
             }
         }
 
-        if (errores.size() > 0) 
+        if (!errores.isEmpty()) 
         {
             String errorMessage = Error.getErrores(errores); 
             System.out.println(errorMessage);
         } else {
-            System.out.println("Todo bien perrito "); 
+            System.out.println("Análisis semántico finalizado."); 
         }
     }
 
@@ -115,7 +114,7 @@ public class App
         return tokens;
     }
 
-    private static List<Variable> getVariables(List<Token> tokens) 
+    private static List<Variable> getVariablesFromTokens(List<Token> tokens) 
     {
         int lineaInicio = tokens
             .stream()
@@ -177,7 +176,7 @@ public class App
         }
     }
     
-    private static void addDimensionesToVariables(List<Token> tokens, List<Variable> variables)
+    private static void addDimensionesToVariablesArray(List<Token> tokens, List<Variable> variables)
     {
         int lineaInicio = tokens
             .stream()

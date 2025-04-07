@@ -180,7 +180,8 @@ public class App
                    writer.write(
                     variable.variableLexema + "\t" + 
                     variable.variableToken + "\t" +
-                    "0" + "\t" +
+                    "-" + "\t" +
+                    "-" + "\t" +
                     "main" + "\n");
             }
     

@@ -1,5 +1,8 @@
 package semantica;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -53,6 +56,10 @@ public class App
             System.out.println(errorMessage);
         } else {
             System.out.println("Análisis semántico finalizado."); 
+        }
+
+        if (variables.size() > 0) {
+            writeTablaSimbolosToFile(variables);
         }
     }
 
@@ -150,6 +157,30 @@ public class App
                 }
                 variable.dimensiones = 1; 
             }
+        }
+    }
+
+    private static void writeTablaSimbolosToFile(List<Variable> variables) throws IOException
+    {
+        try
+        {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("tablaSimbolos.txt"));
+
+            for (Variable variable : variables) 
+            {
+                   writer.write(
+                    variable.variableLexema + "\t" + 
+                    variable.variableToken + "\t" +
+                    "0" + "\t" +
+                    "main" + "\n");
+            }
+    
+            writer.flush();
+            writer.close();
+        }
+        catch (IOException e) 
+        {
+            e.printStackTrace();
         }
     }
 }

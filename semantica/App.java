@@ -1,5 +1,8 @@
 package semantica;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -14,6 +17,7 @@ public class App
         List<Token> tokens = Services.getTokensFromFile("tokensPractica5.txt");
         List<Variable> variables = getVariablesFromTokens(tokens); 
          
+        // Verifica variables no declaradas
         List<Token> variablesNoDeclaradas = Semantica.getVariablesNoDeclaradas(tokens);
         if (variablesNoDeclaradas.size() > 0) 
         {
@@ -22,6 +26,7 @@ public class App
             }      
         }
 
+        // Verifica variables duplicadas
         List<Token> variablesDuplicadas = Semantica.getVariablesDuplicadas(tokens); 
         if (variablesDuplicadas.size() > 0) 
         {
@@ -30,6 +35,7 @@ public class App
             }  
         }
 
+        // Verifica variables con valor invalido
         List<Variable> variablesValorInvalido = Semantica.getVariablesValorInvalido(variables);
         if (variablesValorInvalido.size() > 0)
         {
@@ -38,6 +44,7 @@ public class App
             }
         } 
 
+        // Verifica las dimensiones de una variable
         addDimensionesToVariablesArray(tokens, variables);
         List<Token> variablesNoDimensionadas = Semantica.getVariablesArrayNoDimensionadas(tokens, variables); 
         if (variablesNoDimensionadas.size() > 0)
@@ -47,12 +54,21 @@ public class App
             }
         }
 
+        // Imprime los errores semanticos existentes en el código fuente
         if (!errores.isEmpty()) 
         {
             String errorMessage = Error.getErrores(errores); 
             System.out.println(errorMessage);
         } else {
             System.out.println("Análisis semántico finalizado."); 
+        }
+
+        // Genera la tabla de simbolos y la tabla de direcciones
+        if (variables.size() > 0) {
+            writeTablaSimbolosToFile(variables);
+        }
+        if (tokens.size() > 0) {
+            writeTablaDireccionesToFile(tokens);
         }
     }
 
@@ -150,6 +166,61 @@ public class App
                 }
                 variable.dimensiones = 1; 
             }
+        }
+    }
+
+    private static void writeTablaSimbolosToFile(List<Variable> variables)
+    {
+        try
+        {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("tablaSimbolos.txt"));
+
+            for (Variable variable : variables) 
+            {
+                   writer.write(
+                    variable.variableLexema + "\t" + 
+                    variable.variableToken + "\t" +
+                    "-" + "\t" +
+                    "-" + "\t" +
+                    "main" + "\n");
+            }
+    
+            writer.flush();
+            writer.close();
+        }
+        catch (IOException e) 
+        {
+            e.printStackTrace();
+        }
+    }
+
+    private static void writeTablaDireccionesToFile(List<Token> tokens)
+    {
+        try 
+        {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("tablaDirecciones.txt"));
+
+            List<Token> tokensDirecciones = tokens
+            .stream()
+            .filter(t -> "-55".equals(t.numToken))
+            .collect(Collectors.toList());  
+
+            for (Token token : tokensDirecciones) 
+            {
+                writer.write(
+                    token.lexema + "\t" +
+                    token.numToken + "\t" +
+                    token.numlinea + "\t" +
+                    "0" + "\n"
+                );    
+            }
+
+            writer.flush();
+            writer.close();
+        } 
+        catch (IOException e) 
+        {
+            e.printStackTrace();
         }
     }
 }

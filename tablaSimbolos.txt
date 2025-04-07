@@ -1,0 +1,7 @@
+x&	-51	0	main
+y&	-51	0	main
+numero%	-52	0	main
+valor%	-52	0	main
+mensaje$	-53	0	main
+bandera#	-54	0	main
+estado#	-54	0	main

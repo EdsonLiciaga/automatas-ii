@@ -1,1 +1,1 @@
-miPrograma@	-55	1	0
+conversorTemperatura@	-55	1	0

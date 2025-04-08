@@ -112,7 +112,8 @@ public class Semantica
                             "-24",
                             "-25", 
                             "-73", 
-                            "-74"
+                            "-74", 
+                            "-61"
                         )); 
                         break; 
                     case "-53": 

@@ -1,31 +1,8 @@
-programa miPrograma@;
+programa conversorTemperatura@
 variables
-    entero x&, y&;
-    real numero%, valor%;
-    cadena mensaje$;
-    logico bandera#, estado#;
-inicio
-    leer(x&);
-    escribir(x&);
-    si (x& > y&) entonces
-        inicio
-            leer(numero%);
-            x& = y& * 5;
-            escribir(x&);
-        fin
-    sino
-        inicio
-            leer(bandera#); 
-        fin
-    fin
-    mientras (bandera# == verdadero) hacer
-        leer(valor%);
-        numero% = 100.0 / valor% + 20.5;
-        escribir(mensaje$);
-        repetir
-            escribir("¿Continuar? s/n");
-            leer(mensaje$);
-        hasta (mensaje$ == "n"); 
-    fin
-    escribir("Programa terminado");
-fin
+	real centi%, resultado%; 
+inicio 
+	leer(c%);
+	resultado% = (centi% * 9 / 5) + 32; 
+	escribir (resultado%); 
+fin 

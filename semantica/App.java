@@ -1,6 +1,8 @@
 package semantica;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -85,9 +87,11 @@ public class App
         }
 
         List<Variable> variables = new ArrayList<>(); 
+        int posicion = 1; 
         for (Token token : tokenVariablesDeclaradas) 
         {
             Variable variable = new Variable(token.numToken, token.lexema); 
+            variable.posicion = posicion++; 
             variables.add(variable); 
         }
 
@@ -175,6 +179,7 @@ public class App
         {
             BufferedWriter writer = new BufferedWriter(new FileWriter("tablaSimbolos.txt"));
 
+            // int posicion = 1; 
             for (Variable variable : variables) 
             {
                    writer.write(
@@ -182,11 +187,14 @@ public class App
                     variable.variableToken + "\t" +
                     "-" + "\t" +
                     "-" + "\t" +
-                    "main" + "\n");
+                    "main" + "\t" + 
+                    variable.posicion + "\n");
             }
     
             writer.flush();
             writer.close();
+
+            updateTokenPosicionTabla(variables);
         }
         catch (IOException e) 
         {
@@ -221,6 +229,51 @@ public class App
         catch (IOException e) 
         {
             e.printStackTrace();
+        }
+    }
+
+    public static void updateTokenPosicionTabla(List<Variable> variables)
+    {
+        String rutaArchivo = "tokensPractica5.txt";
+        String rutaSalida = "tokensPractica5(modified).txt"; 
+        try
+        {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(rutaSalida));
+            BufferedReader reader = new BufferedReader(new FileReader(rutaArchivo)); 
+            
+            String linea;
+            while ((linea = reader.readLine()) != null) 
+            {
+                String[] partes = linea.split("\t"); 
+                
+                try 
+                {
+                    if (partes[2].equals("-2"))
+                    {
+                        String numLinea = variables
+                            .stream()
+                            .filter(v -> v.variableLexema.equals(partes[0]))
+                            .map(v -> String.valueOf(v.posicion))
+                            .findFirst()
+                            .orElse(null); 
+
+                        if (numLinea != null) {
+                            partes[2] = numLinea; 
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    System.err.println("Error al convertir número: " + partes[2]);
+                }
+
+                writer.write(String.join("\t", partes)); 
+                writer.newLine();
+            }
+            reader.close();
+            writer.close();
+        }
+        catch(Exception e)
+        {
+            System.err.println("Error al encontrar archivo");
         }
     }
 }

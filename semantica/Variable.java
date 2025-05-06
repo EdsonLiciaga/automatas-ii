@@ -15,4 +15,5 @@ public class Variable
     public String variableLexema;
     public List<Valor> valor = new ArrayList<>(); 
     public int dimensiones; 
+    public int posicion; 
 }

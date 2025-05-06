@@ -1,8 +1,10 @@
 programa conversorTemperatura@
 variables
-	real centi%, resultado%; 
+	real centi%; 
+	real resultado%
+	real auxiliar%; 
 inicio 
-	leer(c%);
+	leer(centi%);
 	resultado% = (centi% * 9 / 5) + 32; 
 	escribir (resultado%); 
 fin 

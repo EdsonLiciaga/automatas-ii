@@ -1,10 +1,10 @@
-package semantica;
+package errors;
 
 import java.util.Set;
 
 public class Error 
 {
-    public static String getErrores(Set<String> errores)
+    public static String getSemanticaErrores(Set<String> errores)
     {
         StringBuilder message = new StringBuilder(); 
 

@@ -1,3 +1,4 @@
+package automatas1;
  import java.io.*;
 import java.util.regex.*;
 

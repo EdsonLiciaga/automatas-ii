@@ -1,4 +1,4 @@
-package semantica;
+package models;
 
 public class Valor 
 {

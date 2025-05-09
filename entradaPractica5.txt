@@ -4,7 +4,5 @@ variables
 	real resultado%
 	real auxiliar%; 
 inicio 
-	leer(centi%);
 	resultado% = (centi% * 9 / 5) + 32; 
-	escribir (resultado%); 
 fin 

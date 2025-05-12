@@ -1,5 +1,4 @@
-package semantica;
-
+package services;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -8,11 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Services 
-{
-	/* En esta clase se definen los metodos que devuelven valores que son utilizados 
-	tanto en la etapa semántica como en las siguientes etapas */
+import models.Token;
 
+public class BaseService 
+{
+	/* En esta clase se definen los metodos que devuelven valores que pueden ser
+     * utilizados en las distintas etapas del compilador. 
+     */
+
+    // Metodo que devuelve una lista de tokens del archivo que contiene la tabla de tokens
 	public static List<Token> getTokensFromFile(String archivo) 
     {
         List<Token> tokens = new ArrayList<>();
@@ -62,7 +65,7 @@ public class Services
         return tokens;
     }
 	
-	// Metodo que devuelve el valor de la linea donde se encuentra el token de inicio del codigo fuente
+	// Metodo que devuelve la linea del token 'inicio' del programa en el código fuente
 	public static int getLineaInicio(List<Token> tokens)
 	{
 		int lineaInicio = tokens
@@ -75,16 +78,19 @@ public class Services
 		return lineaInicio; 
 	}
 
-	/* Metodo que devuelve la lista de token variables que estan declaradas dentro del bloque de 'variables
-	del codigo fuente' */
-	public static List<Token> getTokenVariablesDeclaradas(List<Token> tokens, int lineaInicio)
-	{
-		List<Token> tokenVariablesDeclaradas = tokens 
-            .stream()
-            .filter(t -> t.isVariable
-                && t.numlinea < lineaInicio)
-            .collect(Collectors.toList()); 
+    public static List<Token> getTokensFromFileAtInicio(String archivo) throws Exception
+    {
+        List<Token> tokens = getTokensFromFile(archivo); 
+        int lineaInicio = getLineaInicio(tokens); 
+        if (lineaInicio == 0) {
+            throw new Exception("No se ha encontrado el token 'inicio' del código fuente.");
+        }
 
-		return tokenVariablesDeclaradas; 
-	} 
+        List<Token> tokensAtInicio = tokens
+            .stream()
+            .filter(t -> t.numlinea >= lineaInicio)
+            .collect(Collectors.toList()); 
+        
+        return tokensAtInicio; 
+    }
 }

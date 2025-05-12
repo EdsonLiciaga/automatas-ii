@@ -1,3 +1,4 @@
+package automatas1;
 // Archivo: Practica5.java
 import java.io.*;
 import java.util.ArrayList;

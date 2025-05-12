@@ -1,4 +1,4 @@
-package semantica;
+package etapas.semantica;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -6,11 +6,17 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class Semantica
+import models.Token;
+import models.Valor;
+import models.Variable;
+import services.SemanticaService;
+import services.BaseService;
+
+public class Semantica 
 {
     public static List<Token> getVariablesArrayNoDimensionadas(List<Token> tokens, List<Variable> variables) throws Exception
     {
-        int lineaInicio = Services.getLineaInicio(tokens);
+        int lineaInicio = BaseService.getLineaInicio(tokens);
         if (lineaInicio == 0) {
             throw new Exception("No se ha encontrado el token 'inicio' del código fuente");
         }
@@ -159,12 +165,12 @@ public class Semantica
 
     public static List<Token> getVariablesDuplicadas(List<Token> tokens) throws Exception
     {
-        int lineaInicio = Services.getLineaInicio(tokens);
+        int lineaInicio = BaseService.getLineaInicio(tokens);
         if (lineaInicio == 0) {
             throw new Exception("No se ha encontrado el token 'inicio' del código fuente");
         }
 
-        List<Token> tokenVariablesDeclaradas = Services.getTokenVariablesDeclaradas(tokens, lineaInicio); 
+        List<Token> tokenVariablesDeclaradas = SemanticaService.getTokenVariablesDeclaradas(tokens, lineaInicio); 
         if (tokenVariablesDeclaradas.isEmpty()) {
             throw new Exception("No se encontraron variables declaradas en el código fuente."); 
         }
@@ -181,12 +187,12 @@ public class Semantica
 
     public static List<Token> getVariablesNoDeclaradas(List<Token> tokens) throws Exception 
     {
-        int lineaInicio = Services.getLineaInicio(tokens);
+        int lineaInicio = BaseService.getLineaInicio(tokens);
         if (lineaInicio == 0) {
             throw new Exception("No se ha encontrado el token 'inicio' del código fuente");
         }
  
-        List<Token> tokenVariablesDeclaradas = Services.getTokenVariablesDeclaradas(tokens, lineaInicio); 
+        List<Token> tokenVariablesDeclaradas = SemanticaService.getTokenVariablesDeclaradas(tokens, lineaInicio); 
         if (tokenVariablesDeclaradas.isEmpty()) {
             throw new Exception("No se encontraron variables declaradas en el código fuente."); 
         } 

@@ -1,8 +1,0 @@
-programa conversorTemperatura@
-variables
-	real centi%; 
-	real resultado%
-	real auxiliar%; 
-inicio 
-	resultado% = (centi% * 9 / 5) + 32; 
-fin 

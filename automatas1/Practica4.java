@@ -12,7 +12,7 @@ public class Practica4 {
     private static final Pattern patronOperadorLogico = Pattern.compile("&&|\\|\\||!");
     private static final Pattern patronPalabrasReservadas = Pattern.compile("\\b(programa|inicio|fin|leer|escribir|entero" +
             "|real|cadena|logico|si|entonces|sino|mientras|hacer|repetir|hasta|variables)\\b");
-    private static final Pattern patronEspecial = Pattern.compile("[();,]");
+    private static final Pattern patronEspecial = Pattern.compile("[();,\\[\\]]");
     private static final Pattern patronNumeroEntero = Pattern.compile("\\b\\d+\\b");
     private static final Pattern patronNumeroDecimal = Pattern.compile("\\b\\d+\\.\\d+\\b");
     private static final Pattern patronConstanteCadena = Pattern.compile("\"[^\"]*\"");
@@ -56,8 +56,9 @@ public class Practica4 {
         // Actualizamos la línea limpia (sin cadenas)
         linea = sbLinea.toString();
 
-        // 3) Partimos la línea por espacios y/o separadores
-        String[] tokens = linea.split("\\s+|(?=[(){};,])|(?<=[(){};,])");
+        // // 3) Partimos la línea por espacios y/o separadores
+        // String[] tokens = linea.split("\\s+|(?=[(){};,])|(?<=[(){};,\\[\\]])");
+        String[] tokens = linea.split("\\s+|(?=[(){};,\\[\\]])|(?<=[(){};,\\[\\]])");
 
         // Se podría seguir la posición, pero no es obligatorio para la práctica
         for (String token : tokens) {
@@ -161,6 +162,10 @@ public class Practica4 {
 
     private static int obtenerTokenCaracterEspecial(String caracter) {
         switch (caracter) {
+            case "[": 
+                return -71; 
+            case "]": 
+                return -72; 
             case "(":
                 return -73;
             case ")":
@@ -230,9 +235,9 @@ public class Practica4 {
     // ---------------------------------------------------
     public static void main(String[] args) {
         // Ajusta estos nombres o rutas a tu gusto
-        String nombreArchivoEntrada = "entradaPractica5.txt";
-        String nombreArchivoTokens = "tokensPractica5.txt";
-        String nombreArchivoErrores = "erroresSalida.txt";
+        String nombreArchivoEntrada = "files/codigoFuente.txt";
+        String nombreArchivoTokens = "files/tablaTokens.txt";
+        String nombreArchivoErrores = "files/erroresSalida.txt";
 
         // Comprobar si el archivo de entrada existe
         File archivoEntrada = new File(nombreArchivoEntrada);

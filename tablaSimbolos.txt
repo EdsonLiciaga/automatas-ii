@@ -1,3 +1,0 @@
-centi%	-52	-	-	main	1
-resultado%	-52	-	-	main	2
-auxiliar%	-52	-	-	main	3

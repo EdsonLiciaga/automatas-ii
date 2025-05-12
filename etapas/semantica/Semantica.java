@@ -30,15 +30,15 @@ public class Semantica
                 .stream()
                 .filter(v -> v.variableLexema.equals(token.lexema))
                 .findFirst()
-                .orElse(null);  
-
+                .orElse(null);   
+            
             if (variable == null || variable.dimensiones == 0) {
                 continue;
             }
 
             if (variable.dimensiones == 1)
             {
-                if (!tokens.get(i+1).numToken.equals("-71") && !tokens.get(i+2).numToken.equals("-72")) {
+                if (!tokens.get(i+1).numToken.equals("-71") && !tokens.get(i+3).numToken.equals("-72")) {
                     variablesNoDimensionadas.add(token); 
                 }
             }
@@ -46,9 +46,9 @@ public class Semantica
             if (variable.dimensiones == 2)
             {
                 if (!tokens.get(i+1).numToken.equals("-71") 
-                    && !tokens.get(i+2).numToken.equals("-72")
-                    && !tokens.get(i+3).numToken.equals("-71") 
-                    && !tokens.get(i+4).numToken.equals("-72")) 
+                    && !tokens.get(i+3).numToken.equals("-72")
+                    && !tokens.get(i+4).numToken.equals("-71") 
+                    && !tokens.get(i+6).numToken.equals("-72")) 
                 {
                     variablesNoDimensionadas.add(token); 
                 }

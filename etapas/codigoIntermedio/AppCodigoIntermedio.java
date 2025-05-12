@@ -12,7 +12,7 @@ public class AppCodigoIntermedio
 	public static void main(String[] args) throws Exception 
 	{
 
-		String rutaArchivo = "files/tokensPractica5(modified).txt";
+		String rutaArchivo = "files/tablaTokens(modified).txt";
 		List<Token> tokens = CodigoIntermedioService.getTokensFromFileAtInicio(rutaArchivo);
 		Stack<Token> operadores = new Stack<Token>();
 		List<Token> vci = new ArrayList<Token>();

@@ -12,7 +12,7 @@ public class Practica5 {
     private static int currentTokenIndex = 0;
 
     public static void main(String[] args) {
-        String rutaArchivoTokens = "tokensPractica5.txt";
+        String rutaArchivoTokens = "files/tablaTokens.txt";
 
         tokens = leerTokensDesdeArchivo(rutaArchivoTokens);
         if (tokens == null || tokens.isEmpty()) {

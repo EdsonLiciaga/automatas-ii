@@ -19,8 +19,8 @@ public class WriterService
 	// Método que reescribe la posicion en tabla de un token variable en la tabla de tokens. 
 	public static void rewriteTokenPosicionTabla(List<Variable> variables)
     {
-        String rutaArchivo = "tokensPractica5.txt";
-        String rutaSalida = "files/tokensPractica5(modified).txt"; 
+        String rutaArchivo = "files/tablaTokens.txt";
+        String rutaSalida = "files/tablaTokens(modified).txt"; 
         try
         {
             BufferedWriter writer = new BufferedWriter(new FileWriter(rutaSalida));
@@ -67,7 +67,7 @@ public class WriterService
     {
         try
         {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("tablaSimbolos.txt"));
+            BufferedWriter writer = new BufferedWriter(new FileWriter("files/tablaSimbolos.txt"));
 
             for (Variable variable : variables) 
             {
@@ -96,7 +96,7 @@ public class WriterService
     {
         try 
         {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("tablaDirecciones.txt"));
+            BufferedWriter writer = new BufferedWriter(new FileWriter("files/tablaDirecciones.txt"));
 
             List<Token> tokensDirecciones = tokens
             .stream()

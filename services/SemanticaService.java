@@ -92,17 +92,14 @@ public class SemanticaService extends BaseService
 	// Metodo que agrega el numero de dimensiones a las variables que son arrays. 
     public static void addDimensionesToVariablesList(List<Token> tokens, List<Variable> variables) throws Exception
     {
-        int lineaInicio = getLineaInicio(tokens);
-        if (lineaInicio == 0) {
-            throw new Exception("No se ha encontrado el token 'inicio' del código fuente.");
-        }
-
         List<String> identificadores = variables
             .stream()
             .map(v -> v.variableLexema)
             .collect(Collectors.toList()); 
-            
-        for (int i = 0; i < lineaInicio; i++)
+
+        List <Token> tokensBeforeInicio = getTokensBeforeInicio(tokens); 
+
+        for (int i = 0; i < tokensBeforeInicio.size()-1; i++) 
         {
             Token token = tokens.get(i); 
 
@@ -115,7 +112,7 @@ public class SemanticaService extends BaseService
                 .filter(v -> v.variableLexema.equals(token.lexema))
                 .findFirst()
                 .orElse(null); 
-
+                 
             if (tokens.get(i+1).numToken.equals("-71") && tokens.get(i+2).numToken.equals("-72"))
             {
                 if (tokens.get(i+3).numToken.equals("-71") && tokens.get(i+4).numToken.equals("-72"))

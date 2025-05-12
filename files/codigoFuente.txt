@@ -1,0 +1,7 @@
+programa conversorTemperatura@
+variables
+	entero array&[][]; 
+inicio 
+	array& = 12; 
+fin 
+ 

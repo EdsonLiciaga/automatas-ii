@@ -14,7 +14,7 @@ public class AppSemantica
     public static void main(String[] args) throws Exception
     {
         Set<String> errores = new HashSet<>();
-        List<Token> tokens = SemanticaService.getTokensFromFile("tokensPractica5.txt");
+        List<Token> tokens = SemanticaService.getTokensFromFile("files/tablaTokens.txt");
         List<Variable> variables = SemanticaService.getVariablesFromTokens(tokens); 
          
         // Verifica variables no declaradas

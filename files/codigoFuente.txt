@@ -1,7 +1,10 @@
 programa conversorTemperatura@
 variables
-	entero array&[][]; 
+	entero numeroA&; 
 inicio 
-	array& = 12; 
+	si (numeroA& > 10) hacer
+		inicio
+			numeroA& = 15; 
+		fin
 fin 
  

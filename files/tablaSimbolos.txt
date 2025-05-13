@@ -1,1 +1,1 @@
-array&	-51	-	-	main	1
+numeroA&	-51	-	-	main	1

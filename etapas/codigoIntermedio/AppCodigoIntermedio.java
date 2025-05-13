@@ -11,42 +11,31 @@ public class AppCodigoIntermedio
 {
 	public static void main(String[] args) throws Exception 
 	{
-
 		String rutaArchivo = "files/tablaTokens(modified).txt";
 		List<Token> tokens = CodigoIntermedioService.getTokensFromFileAtInicio(rutaArchivo);
 		Stack<Token> operadores = new Stack<Token>();
+		Stack<Integer> direcciones = new Stack<Integer>(); 
+		Stack<String> estatutos = new Stack<String>(); 
 		List<Token> vci = new ArrayList<Token>();
-
-		for (Token token : tokens) 
+		
+		int apuntador = 0; 
+		for (; apuntador <= tokens.size()-1; apuntador++) 
 		{
-			/*
-			 * Caso 1: Si el token siguiente es ';', entonces se vacía la pila de
-			 * operadores.
-			 */
-			if (token.numToken.equals("-75") && !operadores.isEmpty()) 
-			{
-				StackOperadores.emptyAndMoveToVci(operadores, vci);
-			}
+			Token token = tokens.get(apuntador);  
+			// Revisa un token para validar si es un operador, constante o identificador.
+			CodigoIntermedio.checkToken(token, vci, operadores);
 
-			/*
-			 * Caso 2: Si el token siguiente es un operador o '('4, entonces se
-			 * mueve a la pila de operadores
-			 */
-			boolean isOperador = token.isOperador();
-			if (isOperador || token.numToken.equals("-73")) 
+			// Si el token siguiente es 'if'
+			if (token.numToken.equals("-6")) 
 			{
-				StackOperadores.moveToOperadores(vci, operadores, token);
-			}
-
-			/*
-			 * Caso 3: Si el token siguiente es un identificador o una constante
-			 */
-			boolean isIdentificador = token.isIdentificador();
-			boolean isConstante = token.isConstante();
-			if (isIdentificador || isConstante) 
-			{
-				vci.add(token);
-			}
+				estatutos.push(token.numToken); 	
+				 
+				List<Token> tokensConditionList = CodigoIntermedioService.getTokensFromCondition(token.numlinea, tokens);			
+				for (Token tokenCondition : tokensConditionList) {
+					CodigoIntermedio.checkToken(tokenCondition, vci, operadores);
+					apuntador++; 
+				}  
+			} 
 		}
 		
 		WriterService.writeVci(vci);

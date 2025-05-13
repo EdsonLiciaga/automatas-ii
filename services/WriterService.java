@@ -127,12 +127,13 @@ public class WriterService
 		try 
 		{
 			BufferedWriter writer = new BufferedWriter(new FileWriter("files/vci.txt"));	
-
+            int posicion = 0;
 			for (Token token : vci) 
 			{
 				writer.write(
 					token.lexema + "\t" +
-					token.numToken + "\n" 
+					token.numToken + "\t" +
+                    posicion++ + "\n"
 				);	
 			}
 

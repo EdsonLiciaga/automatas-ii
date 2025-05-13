@@ -44,7 +44,7 @@ public class StackOperadores
 		return prioridadPeekToken >= prioridadNextToken; 
 	}
 
-	public static void emptyAndMoveToVci(Stack<Token> operadores, List<Token> vci)
+	public static void empty(Stack<Token> operadores, List<Token> vci)
 	{
 		while (!operadores.isEmpty())
 		{
@@ -53,6 +53,19 @@ public class StackOperadores
 				continue; 
 			}
 
+			vci.add(token); 
+		}
+	}
+
+	public static void emptyUntilParentesis(Stack<Token> operadores, List<Token> vci)
+	{
+		while (!operadores.isEmpty()) 
+		{
+			Token token = operadores.pop(); 
+			if (token.numToken.equals("-73")) {
+				break; 
+			}
+			
 			vci.add(token); 
 		}
 	}

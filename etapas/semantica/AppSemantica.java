@@ -16,6 +16,8 @@ public class AppSemantica
         Set<String> errores = new HashSet<>();
         List<Token> tokens = SemanticaService.getTokensFromFile("files/tablaTokens.txt");
         List<Variable> variables = SemanticaService.getVariablesFromTokens(tokens); 
+        SemanticaService.addDimensionesToVariablesList(tokens, variables);
+        SemanticaService.addValorToVariables(tokens, variables);
          
         // Verifica variables no declaradas
         List<Token> variablesNoDeclaradas = Semantica.getVariablesNoDeclaradas(tokens);
@@ -45,7 +47,6 @@ public class AppSemantica
         } 
 
         // Verifica las dimensiones de una variable
-        SemanticaService.addDimensionesToVariablesList(tokens, variables);
         List<Token> variablesNoDimensionadas = Semantica.getVariablesArrayNoDimensionadas(tokens, variables); 
         if (variablesNoDimensionadas.size() > 0)
         {

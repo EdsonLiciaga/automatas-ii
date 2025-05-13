@@ -16,4 +16,5 @@ public class Variable
     public List<Valor> valor = new ArrayList<>(); 
     public int dimensiones; 
     public int posicion; 
+    public boolean isArray; 
 }

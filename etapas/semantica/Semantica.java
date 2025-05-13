@@ -16,15 +16,11 @@ public class Semantica
 {
     public static List<Token> getVariablesArrayNoDimensionadas(List<Token> tokens, List<Variable> variables) throws Exception
     {
-        int lineaInicio = BaseService.getLineaInicio(tokens);
-        if (lineaInicio == 0) {
-            throw new Exception("No se ha encontrado el token 'inicio' del código fuente");
-        }
-
+        List<Token> tokensAtInicio = SemanticaService.getTokensAtInicio(tokens); 
         List<Token> variablesNoDimensionadas = new ArrayList<>(); 
-        for (int i = lineaInicio; i < tokens.size()-1; i++)
+        for (int i = 0; i < tokensAtInicio.size()-1; i++)
         {
-            Token token = tokens.get(i);
+            Token token = tokensAtInicio.get(i);
 
             Variable variable = variables
                 .stream()
@@ -38,19 +34,23 @@ public class Semantica
 
             if (variable.dimensiones == 1)
             {
-                if (!tokens.get(i+1).numToken.equals("-71") && !tokens.get(i+3).numToken.equals("-72")) {
+                if (!tokensAtInicio.get(i+1).numToken.equals("-71") && !tokensAtInicio.get(i+3).numToken.equals("-72")) {
                     variablesNoDimensionadas.add(token); 
                 }
             }
 
             if (variable.dimensiones == 2)
             {
-                if (!tokens.get(i+1).numToken.equals("-71") 
-                    && !tokens.get(i+3).numToken.equals("-72")
-                    && !tokens.get(i+4).numToken.equals("-71") 
-                    && !tokens.get(i+6).numToken.equals("-72")) 
+                if (tokensAtInicio.get(i+1).numToken.equals("-71") 
+                && tokensAtInicio.get(i+3).numToken.equals("-72")
+                && tokensAtInicio.get(i+4).numToken.equals("-71") 
+                && tokensAtInicio.get(i+6).numToken.equals("-72")) 
                 {
-                    variablesNoDimensionadas.add(token); 
+                    continue;  
+                }
+                else
+                {
+                    variablesNoDimensionadas.add(token);
                 }
             }
         }

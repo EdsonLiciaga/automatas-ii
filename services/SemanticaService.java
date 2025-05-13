@@ -35,21 +35,91 @@ public class SemanticaService extends BaseService
             variables.add(variable); 
         }
 
-        addValorToVariables(lineaInicio, tokens, variables);
         return variables; 
     }  
 
     // Método que agrega el valor almacenado en una variable.
-	public static void addValorToVariables(int lineaInicio, List<Token> tokens, List<Variable> variables)
+	public static void addValorToVariables(List<Token> tokens, List<Variable> variables) throws Exception
     {
-        for (int i = lineaInicio; i < tokens.size()-1; i++)
+        int lineaInicio = getLineaInicio(tokens);
+        if (lineaInicio == 0) {
+            throw new Exception("No se ha encontrado el token 'inicio' del código fuente.");
+        }
+
+        for (int i = 0; i < tokens.size()-1; i++)
         {
             Token token = tokens.get(i); 
             if (!token.isVariable) {
                 continue; 
             }
 
-            Token nextToken = tokens.get(i+1); 
+            if (tokens.get(i+1).numToken.equals("-71") && tokens.get(i+3).numToken.equals("-72"))
+            {
+                if (!tokens.get(i+4).numToken.equals("-26")) 
+                {
+                    if (tokens.get(i+4).numToken.equals("-71") && tokens.get(i+6).numToken.equals("-72"))
+                    {
+                        if (!tokens.get(i+7).numToken.equals("-26")) {
+                            continue; 
+                        }
+                        else
+                        {
+                            List<Valor> valor = tokens
+                                .stream()
+                                .filter(t -> t.numlinea == token.numlinea)
+                                .map(t -> new Valor(t.numToken, t.lexema))
+                                .collect(Collectors.toList());  
+                                
+                            valor.removeFirst(); 
+                            valor.removeFirst();
+                            valor.removeFirst(); 
+                            valor.removeFirst();
+                            valor.removeFirst();
+                            valor.removeFirst();
+                            valor.removeFirst();
+                            valor.removeFirst();
+                            valor.removeLast();
+
+                            Variable variable = variables
+                                .stream()
+                                .filter(v -> v.variableLexema.equals(token.lexema))
+                                .findFirst()
+                                .orElse(null);
+
+                            if (variable != null) {
+                                variable.valor = valor;
+                            }                           
+                        }
+                    }
+                } 
+                else
+                {
+                    List<Valor> valor = tokens
+                        .stream()
+                        .filter(t -> t.numlinea == token.numlinea)
+                        .map(t -> new Valor(t.numToken, t.lexema))
+                        .collect(Collectors.toList());  
+                                
+                    valor.removeFirst(); 
+                    valor.removeFirst();
+                    valor.removeFirst(); 
+                    valor.removeFirst();
+                    valor.removeFirst();
+                    valor.removeLast();
+
+                    Variable variable = variables
+                        .stream()
+                        .filter(v -> v.variableLexema.equals(token.lexema))
+                        .findFirst()
+                        .orElse(null);
+
+                    if (variable != null) {
+                        variable.valor = valor;
+                    }  
+                }  
+            }
+
+            Token nextToken = tokens.get(i+1);
             if (!nextToken.numToken.equals("-26")) {
                 continue; 
             }
@@ -122,6 +192,7 @@ public class SemanticaService extends BaseService
                 }
                 variable.dimensiones = 1; 
             }
+            variable.isArray = true; 
         }
     }
 }

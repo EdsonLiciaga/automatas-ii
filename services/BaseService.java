@@ -94,6 +94,21 @@ public class BaseService
         return tokensAtInicio; 
     }
 
+    public static List<Token> getTokensAtInicio(List<Token> tokens) throws Exception
+    {
+        int lineaInicio = getLineaInicio(tokens); 
+        if (lineaInicio == 0) {
+            throw new Exception("No se ha encontrado el token 'inicio' del código fuente.");
+        }
+
+        List<Token> tokensAtInicio = tokens
+            .stream()
+            .filter(t -> t.numlinea >= lineaInicio)
+            .collect(Collectors.toList()); 
+        
+        return tokensAtInicio; 
+    }
+
     public static List<Token> getTokensBeforeInicio(List<Token> tokens) throws Exception
     {
         int lineaInicio = getLineaInicio(tokens); 

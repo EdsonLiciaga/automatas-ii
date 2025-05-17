@@ -1,10 +1,15 @@
-programa conversorTemperatura@
+programa parOImpar@
 variables
-	entero numeroA&; 
+	entero n&, resto&;
+	cadena resultado$; 
 inicio 
-	si (numeroA& > 10) hacer
+	si ((n& / 2)  *   2 == n&)
 		inicio
-			numeroA& = 15; 
+			n& = 2;
+		fin 
+	sino 
+		inicio
+			n& = 1; 
 		fin
-fin 
- 
+	fin
+fin

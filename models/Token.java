@@ -4,11 +4,11 @@ import java.util.List;
 
 public class Token 
 {
-    public String lexema;
-    public String numToken;
-    public String posicion; 
-    public int numlinea; 
-    public boolean isVariable; 
+    public String lexema = "";
+    public String numToken = "";
+    public String posicion = ""; 
+    public int numlinea = 0; 
+    public boolean isVariable = false; 
 
     public Token() {}
 

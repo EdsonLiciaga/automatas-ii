@@ -12,9 +12,7 @@ import models.Variable;
 
 public class WriterService 
 {
-	/* En esta clase se definen los metodos utilizados para escribir o reescribir sobre un 
-	 * archivo .txt
-	 */
+	// En esta clase se definen los metodos utilizados para escribir o reescribir sobre un archivo .txt
 
 	// Método que reescribe la posicion en tabla de un token variable en la tabla de tokens. 
 	public static void rewriteTokenPosicionTabla(List<Variable> variables)
@@ -127,12 +125,13 @@ public class WriterService
 		try 
 		{
 			BufferedWriter writer = new BufferedWriter(new FileWriter("files/vci.txt"));	
-
+            int posicion = 0;
 			for (Token token : vci) 
 			{
 				writer.write(
 					token.lexema + "\t" +
-					token.numToken + "\n" 
+					token.numToken + "\t" +
+                    posicion++ + "\n"
 				);	
 			}
 

@@ -1,4 +1,4 @@
-package etapas.semantica;
+package app;
 
 import java.util.HashSet;
 import java.util.List;
@@ -18,7 +18,7 @@ public class AppSemantica
         List<Variable> variables = SemanticaService.getVariablesFromTokens(tokens); 
          
         // Verifica variables no declaradas
-        List<Token> variablesNoDeclaradas = Semantica.getVariablesNoDeclaradas(tokens);
+        List<Token> variablesNoDeclaradas = SemanticaService.getVariablesNoDeclaradas(tokens);
         if (variablesNoDeclaradas.size() > 0) 
         {
             for (Token token : variablesNoDeclaradas) {
@@ -27,7 +27,7 @@ public class AppSemantica
         }
 
         // Verifica variables duplicadas
-        List<Token> variablesDuplicadas = Semantica.getVariablesDuplicadas(tokens); 
+        List<Token> variablesDuplicadas = SemanticaService.getVariablesDuplicadas(tokens); 
         if (variablesDuplicadas.size() > 0) 
         {
             for (Token token : variablesDuplicadas) {
@@ -36,7 +36,7 @@ public class AppSemantica
         }
 
         // Verifica variables con valor invalido
-        List<Variable> variablesValorInvalido = Semantica.getVariablesValorInvalido(variables);
+        List<Variable> variablesValorInvalido = SemanticaService.getVariablesValorInvalido(variables);
         if (variablesValorInvalido.size() > 0)
         {
             for (Variable variable : variablesValorInvalido) {
@@ -46,7 +46,7 @@ public class AppSemantica
 
         // Verifica las dimensiones de una variable
         SemanticaService.addDimensionesToVariablesList(tokens, variables);
-        List<Token> variablesNoDimensionadas = Semantica.getVariablesArrayNoDimensionadas(tokens, variables); 
+        List<Token> variablesNoDimensionadas = SemanticaService.getVariablesArrayNoDimensionadas(tokens, variables); 
         if (variablesNoDimensionadas.size() > 0)
         {
             for (Token token : variablesNoDimensionadas) {

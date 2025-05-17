@@ -1,1 +1,1 @@
-conversorTemperatura@	-55	1	0
+parOImpar@	-55	1	0

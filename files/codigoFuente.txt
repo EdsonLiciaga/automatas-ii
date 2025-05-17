@@ -1,7 +1,15 @@
-programa conversorTemperatura@
+programa parOImpar@
 variables
-	entero array&[][]; 
+	entero n&, resto&;
+	cadena resultado$; 
 inicio 
-	array& = 12; 
-fin 
- 
+	si ((n& / 2)  *   2 == n&)
+		inicio
+			n& = 2;
+		fin 
+	sino 
+		inicio
+			n& = 1; 
+		fin
+	fin
+fin

@@ -18,20 +18,25 @@ public class AppCodigoIntermedio
 		Stack<Token> estatutos = new Stack<Token>(); 
 		List<Token> vci = new ArrayList<Token>();
 		
-		int apuntador = 1; 
+		int apuntador = 0; 
 		for (int i = 0; i <= tokens.size()-1; i++) 
 		{
+			apuntador = vci.size(); 
 			Token token = tokens.get(i);
 
 			// Revisa un token para validar si es un operador, constante o identificador.
 			CodigoIntermedioService.checkToken(token, vci, operadores);
 
-			// Si el token es 'if'
-			if (token.numToken.equals("-6")) 
+			List <String> tokenEstatutosValidos = List.of(
+				"-6", 
+				"-8");
+
+			// Si el token es 'if' o 'while'
+			if (tokenEstatutosValidos.contains(token.numToken)) 
 			{
 				estatutos.push(token); 		
 
-				// Revisa los token de la condición del if
+				// Revisa los token de la condición
 				List<Token> tokensCondition = CodigoIntermedioService.getTokensFromCondition(token.numlinea, tokens);			
 				for (Token t : tokensCondition) {
 					CodigoIntermedioService.checkToken(t, vci, operadores);
@@ -59,7 +64,7 @@ public class AppCodigoIntermedio
 				{
 					Token nextToken = tokens.get(i+1); 
 					if (nextToken.numToken.equals("-7")) {
-						apuntador++;
+						// apuntador++;
 						continue; 
 					} 
 					else 
@@ -86,8 +91,6 @@ public class AppCodigoIntermedio
 				// Genera un token vacio y el token de un estatuto en el vci
 				CodigoIntermedioService.moveTokenVacioAndEstatutoToVci(token, vci, direcciones);
 			}
-
-			apuntador++; 
 		}
 		
 		WriterService.writeVci(vci);

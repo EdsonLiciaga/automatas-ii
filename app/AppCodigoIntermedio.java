@@ -27,17 +27,23 @@ public class AppCodigoIntermedio
 			// Revisa un token para validar si es un operador, constante o identificador.
 			CodigoIntermedioService.checkToken(token, vci, operadores);
 
-			List <String> tokenEstatutosValidos = List.of(
+			List<String> estatutosValidos = List.of(
 				"-6", 
 				"-8");
-
 			// Si el token es 'if' o 'while'
-			if (tokenEstatutosValidos.contains(token.numToken)) 
+			if (estatutosValidos.contains(token.numToken)) 
 			{
 				estatutos.push(token); 		
 
+				// Si el token es 'while' guarda la direccion donde empieza el ciclo en 
+				// la pila de direcciones
+				if (token.numToken.equals("-8")) {
+					direcciones.push(apuntador); 
+				}
+
 				// Revisa los token de la condición
-				List<Token> tokensCondition = CodigoIntermedioService.getTokensFromCondition(token.numlinea, tokens);			
+				List<Token> tokensCondition = CodigoIntermedioService.getTokensFromCondition(token.numlinea, tokens);	
+
 				for (Token t : tokensCondition) {
 					CodigoIntermedioService.checkToken(t, vci, operadores);
 					i++; 
@@ -46,6 +52,12 @@ public class AppCodigoIntermedio
 				// Genera un token vacio y el token de un estatuto en el vci
 				CodigoIntermedioService.moveTokenVacioAndEstatutoToVci(token, vci, direcciones);
 			} 
+
+			if (token.numToken.equals("-17"))
+			{
+				estatutos.push(token); 
+				direcciones.push(apuntador);
+			}
 
 			// Si el token es 'fin'
 			if (token.numToken.equals("-3"))
@@ -78,6 +90,27 @@ public class AppCodigoIntermedio
 				{
 					// Guarda el valor del apuntador en un token vacio
 					CodigoIntermedioService.addDireccionToTokenVacio(direcciones, vci, apuntador);
+				}
+
+				if (tokenEstatuto.numToken.equals("-8"))
+				{
+					CodigoIntermedioService.addDireccionToTokenVacio(direcciones, vci, apuntador+2);
+					CodigoIntermedioService.addDireccionToApuntador(direcciones, vci); 
+					Token tokenFinW = new Token("finWhile", "-3"); 
+					vci.add(tokenFinW); 
+				}
+
+				if (tokenEstatuto.numToken.equals("-17"))
+				{
+					List<Token> tokensCondition = CodigoIntermedioService.getTokensFromCondition(token.numlinea+1, tokens);
+					for (Token t : tokensCondition) {
+						CodigoIntermedioService.checkToken(t, vci, operadores);
+						i++; 
+					}  
+
+					CodigoIntermedioService.addDireccionToApuntador(direcciones, vci);
+					Token tokenFinW = new Token("finDoWhile", "-3"); 
+					vci.add(tokenFinW);
 				}
 			}
 

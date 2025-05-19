@@ -1,15 +1,14 @@
-programa parOImpar@
+programa nFactorial@
 variables
-	entero n&, resto&;
-	cadena resultado$; 
+	entero n&, index&, resultado&; 
 inicio 
-	si ((n& / 2)  *   2 == n&)
+	index& = 1; 
+	resultado& = 1; 
+
+	hacer
 		inicio
-			n& = 2;
-		fin 
-	sino 
-		inicio
-			n& = 1; 
+			resultado& = resultado& * index&;  
+			index& = index& + 1; 
 		fin
-	fin
+	hasta (index& <= 10); 
 fin

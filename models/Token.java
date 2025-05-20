@@ -12,7 +12,12 @@ public class Token
 
     public Token() {}
 
-    public Token(String lexema, String numToken) {
+    public Token(String lexema) {
+        this.lexema = lexema; 
+    }
+
+    public Token(String lexema, String numToken) 
+    {
         this.lexema = lexema; 
         this.numToken = numToken; 
     }
@@ -35,7 +40,7 @@ public class Token
     public boolean isOperador()
 	{
 		List<String> operadoresValidos = List.of("-21", "-22", 
-			"-23", "-24", "-25", "-26", "-31", "-32 ", "-33", "-34", "-35", 
+			"-23", "-24", "-25", "-26", "-31", "-32", "-33", "-34", "-35", 
 			"-36", "-41", "-42", "-43"); 
 
 		return operadoresValidos.contains(numToken); 

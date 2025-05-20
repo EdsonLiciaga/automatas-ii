@@ -17,6 +17,13 @@ public class CodigoIntermedioService extends BaseService
 			.stream()
 			.filter(t -> t.numlinea == linea)
 			.collect(Collectors.toList());  
+		
+		if (tokensCondition.getFirst().numToken.equals("-8")) {
+			tokens.removeIf(t -> t.numToken.equals("-17")
+				&& t.numlinea == linea);  
+			tokensCondition.removeLast(); 
+		}
+
 		tokensCondition.removeFirst(); 
 
 		return tokensCondition; 
@@ -40,6 +47,14 @@ public class CodigoIntermedioService extends BaseService
 		Token tokenVacio = vci.get(direccionTokenVacio); 
 		String lexemaDireccion = String.valueOf(apuntador);
 		tokenVacio.lexema = lexemaDireccion;
+	}
+
+	// Metodo que guarda una direccion de la pila de direcciones en el apuntador del vci
+	public static void addDireccionToApuntador(Stack<Integer> direcciones, List<Token> vci)
+	{
+		String direccion = String.valueOf(direcciones.pop()); 
+        Token tokenDireccion = new Token(direccion); 
+		vci.add(tokenDireccion);
 	}
 
 	// Método que revisa un token de la tabla de tokens 

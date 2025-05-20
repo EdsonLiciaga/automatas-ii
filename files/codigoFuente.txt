@@ -15,4 +15,6 @@ inicio
 			hasta (j& <= 3);
 			i& = i& + 1;  		
 		fin 
+
+	escribir(i& + j& + y&); 
 fin

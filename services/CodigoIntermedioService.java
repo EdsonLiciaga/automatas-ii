@@ -11,7 +11,7 @@ public class CodigoIntermedioService extends BaseService
 	// de codigo intermedio. 
 
 	// Metodo que devuelve los token de la condicion de una estructura de control
-	public static List<Token> getTokensFromCondition(int linea, List<Token> tokens)
+	public static List<Token> getTokensFromLinea(int linea, List<Token> tokens)
 	{
 		List<Token> tokensCondition = tokens
 			.stream()

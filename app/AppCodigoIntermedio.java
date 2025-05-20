@@ -42,7 +42,7 @@ public class AppCodigoIntermedio
 				}
 
 				// Revisa los token de la condición
-				List<Token> tokensCondition = CodigoIntermedioService.getTokensFromCondition(token.numlinea, tokens);	
+				List<Token> tokensCondition = CodigoIntermedioService.getTokensFromLinea(token.numlinea, tokens);	
 
 				for (Token t : tokensCondition) {
 					CodigoIntermedioService.checkToken(t, vci, operadores);
@@ -102,7 +102,7 @@ public class AppCodigoIntermedio
 
 				if (tokenEstatuto.numToken.equals("-17"))
 				{ 
-					List<Token> tokensCondition = CodigoIntermedioService.getTokensFromCondition(token.numlinea+1, tokens);
+					List<Token> tokensCondition = CodigoIntermedioService.getTokensFromLinea(token.numlinea+1, tokens);
 					for (Token t : tokensCondition) {
 						CodigoIntermedioService.checkToken(t, vci, operadores);
 						i++; 
@@ -113,7 +113,6 @@ public class AppCodigoIntermedio
 					vci.add(tokenFinW);
 				}
 			}
-
 			 
 			// Si el token es 'else' guarda el valor del apuntador+2 a un token vacio 
 			if (token.numToken.equals("-7"))
@@ -123,6 +122,20 @@ public class AppCodigoIntermedio
 				CodigoIntermedioService.addDireccionToTokenVacio(direcciones, vci, apuntador+2);
 				// Genera un token vacio y el token de un estatuto en el vci
 				CodigoIntermedioService.moveTokenVacioAndEstatutoToVci(token, vci, direcciones);
+			}
+
+			List<String> palabrasReservadasValidos = List.of(
+				"-4", 
+				"-5");
+			if (palabrasReservadasValidos.contains(token.numToken))
+			{
+				List<Token> tokensLinea = CodigoIntermedioService.getTokensFromLinea(token.numlinea, tokens); 
+				
+				for (Token t : tokensLinea) {
+					CodigoIntermedioService.checkToken(t, vci, operadores);
+					i++; 
+				} 
+				vci.add(token); 
 			}
 		}
 		

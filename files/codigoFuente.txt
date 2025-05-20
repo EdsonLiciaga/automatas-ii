@@ -1,14 +1,18 @@
 programa nFactorial@
 variables
-	entero n&, index&, resultado&; 
+	entero i&, j&, x&, y&; 
 inicio 
-	index& = 1; 
-	resultado& = 1; 
-
-	hacer
+	i& = 1; 
+	mientras (i& < 2) hacer
 		inicio
-			resultado& = resultado& * index&;  
-			index& = index& + 1; 
-		fin
-	hasta (index& <= 10); 
+			j& = 1; 
+			x& = 5 - 1 * 2 + 4; 	
+
+			hacer
+				inicio
+					j& = i& + 1 + j&; 
+				fin
+			hasta (j& <= 3);
+			i& = i& + 1;  		
+		fin 
 fin

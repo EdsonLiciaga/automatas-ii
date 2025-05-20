@@ -101,7 +101,7 @@ public class AppCodigoIntermedio
 				}
 
 				if (tokenEstatuto.numToken.equals("-17"))
-				{
+				{ 
 					List<Token> tokensCondition = CodigoIntermedioService.getTokensFromCondition(token.numlinea+1, tokens);
 					for (Token t : tokensCondition) {
 						CodigoIntermedioService.checkToken(t, vci, operadores);

@@ -1,3 +1,4 @@
-n&	-51	-	-	main	1
-index&	-51	-	-	main	2
-resultado&	-51	-	-	main	3
+i&	-51	-	-	main	1
+j&	-51	-	-	main	2
+x&	-51	-	-	main	3
+y&	-51	-	-	main	4

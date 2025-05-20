@@ -19,8 +19,11 @@ public class CodigoIntermedioService extends BaseService
 			.collect(Collectors.toList());  
 		
 		if (tokensCondition.getFirst().numToken.equals("-8")) {
+			tokens.removeIf(t -> t.numToken.equals("-17")
+				&& t.numlinea == linea);  
 			tokensCondition.removeLast(); 
 		}
+
 		tokensCondition.removeFirst(); 
 
 		return tokensCondition; 
